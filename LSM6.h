@@ -89,6 +89,8 @@ class LSM6
 
     vector<int16_t> a; // accelerometer readings
     vector<int16_t> g; // gyro readings
+    vector<float> ca; // calibrated Acc value
+    vector<float> cg; // calibrated Gyro value
 
     uint8_t last_status; // status of last I2C transmission
 
@@ -99,9 +101,10 @@ class LSM6
 
     void enableDefault(void);
 
-
     void writeReg(uint8_t reg, uint8_t value);
     uint8_t readReg(uint8_t reg);
+
+    void calibrateIMU(void);
 
     void readAcc(void);
     void readGyro(void);

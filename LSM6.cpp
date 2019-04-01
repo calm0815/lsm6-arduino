@@ -141,6 +141,38 @@ uint8_t LSM6::readReg(uint8_t reg)
   return value;
 }
 
+// IMU calibration
+void LSM6::calibrateIMU(void)
+{
+  float ax = 0;
+  float ay = 0;
+  float az = 0;
+  float gx = 0;
+  float gy = 0;
+  float gz = 0;
+
+  for(int i=1; i <= 1000; i++)
+  {
+    read();
+
+    ax = ((i-1) * ax + a.x) / i;
+    ay = ((i-1) * ay + a.y) / i;
+    az = ((i-1) * az + a.z) / i;
+    gx = ((i-1) * gx + g.x) / i;
+    gy = ((i-1) * gy + g.y) / i;
+    gz = ((i-1) * gz + g.z) / i; 
+  }
+  
+  ca.x = ax;
+  ca.y = ay;
+  ca.z = az;
+  cg.x = gx;
+  cg.y = gy;
+  cg.z = gz; 
+  
+  return;
+}
+
 // Reads the 3 accelerometer channels and stores them in vector a
 void LSM6::readAcc(void)
 {
